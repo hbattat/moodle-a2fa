@@ -1,7 +1,7 @@
 A2FA or Etouffee as I like to call it!
 ======================================
 A2FA is multi-factor authentication plugin that uses time-based tokens generated every 60 seconds in Google Authenticator app.
-A2FA Stands for **A** nother **T**wo-**F**actor **A**uthentication
+A2FA Stands for Another Two-Factor Authentication
 
 This plugin requires another small plugin (profile field plugin) get it from here [link to afaqr]
 
