@@ -16,13 +16,13 @@ Or upload the a2fa folder to /auth/ directory and follow installation steps afte
 Then install the afaqr plugin by uploading the afaqr.zip using the plugin installation interface (Choose *profile field* as a plugin type)
 
 
-* Once these plugins are installed, go to *** Site Administration > Users > Accounts > User profile fields*** 
+* Once these plugins are installed, go to ***Site Administration > Users > Accounts > User profile fields*** 
 
-* Add an *** a2fa QR code input *** with the shortname ***a2fasecret*** (This name is being used in the code and has to match for the system to work)
+* Add an ***a2fa QR code input*** with the shortname ***a2fasecret*** (This name is being used in the code and has to match for the system to work)
 
 * Make this field ***Visible to user***
 
-Now go to *** Site Administration > Plugins > Authentication > Manage authentication *** and enable ***A2FA***
+Now go to ***Site Administration > Plugins > Authentication > Manage authentication*** and enable ***A2FA***
 
 Once the authentication method is enable go to the user that you want to force using this auth method and edit their authentication method.
 
