@@ -30,6 +30,7 @@ Once the authentication method is enable go to the user that you want to force u
 
 ##How to set up A2FA for a user:
 If you set the login methed for your user(s) to be A2FA the user cannot login to set up their Authenticator app with the QR code because they don't have the 60-second password on their phone or tablet to log in (it is not yet set up)
+
 One way to solve this issue is by generating the QR code and email it to your user, or have tell your users to set up the Authenticator app before you turn on the A2FA for them (Give them a week or so for example)
 
 ##How to login:
