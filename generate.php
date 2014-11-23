@@ -27,9 +27,12 @@ $isadmin = is_siteadmin($USER);
 
 if($isadmin){
 	$ga = new PHPGangsta_GoogleAuthenticator();
+	$field = $DB->get_record('user_info_field', array('shortname'=>'a2fasecret'));
+        $fid = $field->id;
+
 	do{
 		$secret = $ga->createSecret();
-		$row = $DB->get_records_select('user_info_data', $DB->sql_compare_text('data')." = '$secret'");
+		$row = $DB->get_records_select('user_info_data', "fieldid = {$fid} AND ".$DB->sql_compare_text('data')." = '$secret'");
 	} while(!empty($row));
 
 	echo json_encode(array('status' => 'success', 'secret' => $secret));
