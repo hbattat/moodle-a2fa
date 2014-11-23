@@ -29,3 +29,4 @@ $plugin->requires  = 2014050800;        // Requires this Moodle version
 $plugin->component = 'auth_a2fa';       // Full name of the plugin (used for diagnostics)
 $plugin->release = 'v1.0';
 $plugin->dependencies = array('profilefield_afaqr' => ANY_VERSION);
+$plugin->maturity = MATURITY_STABLE;
