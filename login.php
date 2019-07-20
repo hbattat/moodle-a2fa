@@ -27,6 +27,17 @@
 require('../../config.php');
 require_once('../../login/lib.php');
 
+function https_required() {
+    global $PAGE;
+
+    if (strpos($PAGE->url, 'https://')) {
+        // Detect if incorrect PAGE->set_url() used, it is recommended to use root-relative paths there.
+        throw new moodle_exception('a2fa plugin only works if https is enabled');
+    }
+
+}
+
+
 // Try to prevent searching for sites that allow sign-up.
 if (!isset($CFG->additionalhtmlhead)) {
     $CFG->additionalhtmlhead = '';
@@ -42,13 +53,11 @@ if ($cancel) {
     redirect(new moodle_url('/'));
 }
 
-//HTTPS is required in this page when $CFG->loginhttps enabled
-$PAGE->https_required();
-
 $context = context_system::instance();
-$PAGE->set_url("$CFG->httpswwwroot/auth/a2fa/login.php");
+$PAGE->set_url("$CFG->wwwroot/auth/a2fa/login.php");
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('login');
+https_required();
 
 /// Initialize variables
 $errormsg = '';
@@ -203,10 +212,10 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
             if ($userauth->can_change_password()) {
                 $passwordchangeurl = $userauth->change_password_url();
                 if (!$passwordchangeurl) {
-                    $passwordchangeurl = $CFG->httpswwwroot.'/login/change_password.php';
+                    $passwordchangeurl = $CFG->wwwroot.'/login/change_password.php';
                 }
             } else {
-                $passwordchangeurl = $CFG->httpswwwroot.'/login/change_password.php';
+                $passwordchangeurl = $CFG->wwwroot.'/login/change_password.php';
             }
             $days2expire = $userauth->password_expire($USER->username);
             $PAGE->set_title("$site->fullname: $loginsite");
@@ -251,9 +260,9 @@ if (empty($SESSION->wantsurl)) {
     $SESSION->wantsurl = (array_key_exists('HTTP_REFERER',$_SERVER) &&
                           $_SERVER["HTTP_REFERER"] != $CFG->wwwroot &&
                           $_SERVER["HTTP_REFERER"] != $CFG->wwwroot.'/' &&
-                          $_SERVER["HTTP_REFERER"] != $CFG->httpswwwroot.'/auth/' &&
-                          strpos($_SERVER["HTTP_REFERER"], $CFG->httpswwwroot.'/auth/?') !== 0 &&
-                          strpos($_SERVER["HTTP_REFERER"], $CFG->httpswwwroot.'/auth/a2fa/login.php') !== 0) // There might be some extra params such as ?lang=.
+                          $_SERVER["HTTP_REFERER"] != $CFG->wwwroot.'/auth/' &&
+                          strpos($_SERVER["HTTP_REFERER"], $CFG->wwwroot.'/auth/?') !== 0 &&
+                          strpos($_SERVER["HTTP_REFERER"], $CFG->wwwroot.'/auth/a2fa/login.php') !== 0) // There might be some extra params such as ?lang=.
         ? $_SERVER["HTTP_REFERER"] : NULL;
 }
 
@@ -280,8 +289,7 @@ if (!empty($CFG->alternateloginurl)) {
 }
 */
 
-// make sure we really are on the https page when https login required
-$PAGE->verify_https_required();
+
 
 /// Generate the login page with forms
 
@@ -342,8 +350,8 @@ echo $OUTPUT->header();
 if (isloggedin() and !isguestuser()) {
     // prevent logging when already logged in, we do not want them to relogin by accident because sesskey would be changed
     echo $OUTPUT->box_start();
-    $logout = new single_button(new moodle_url($CFG->httpswwwroot.'/login/logout.php', array('sesskey'=>sesskey(),'loginpage'=>1)), get_string('logout'), 'post');
-    $continue = new single_button(new moodle_url($CFG->httpswwwroot.'/auth/a2fa/login.php', array('cancel'=>1)), get_string('cancel'), 'get');
+    $logout = new single_button(new moodle_url($CFG->wwwroot.'/login/logout.php', array('sesskey'=>sesskey(),'loginpage'=>1)), get_string('logout'), 'post');
+    $continue = new single_button(new moodle_url($CFG->wwwroot.'/auth/a2fa/login.php', array('cancel'=>1)), get_string('cancel'), 'get');
     echo $OUTPUT->confirm(get_string('alreadyloggedin', 'error', fullname($USER)), $logout, $continue);
     echo $OUTPUT->box_end();
 } else {

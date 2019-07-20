@@ -35,7 +35,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
     /**
      * Constructor.
      */
-    function auth_plugin_a2fa() {
+    function __construct() {
         $this->authtype = 'a2fa';
         $this->config = get_config('auth/a2fa');
     }

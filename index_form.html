@@ -33,7 +33,7 @@ if (empty($CFG->authloginviaemail)) {
               echo html_writer::end_tag('div');
           }
         ?>
-        <form action="<?php echo $CFG->httpswwwroot; ?>/auth/a2fa/login.php" method="post" id="login" <?php echo $autocomplete; ?> >
+        <form action="<?php echo $CFG->wwwroot; ?>/auth/a2fa/login.php" method="post" id="login" <?php echo $autocomplete; ?> >
           <div class="loginform">
             <div class="form-label"><label for="username"><?php echo($strusername) ?></label></div>
             <div class="form-input">
@@ -118,7 +118,11 @@ if (empty($CFG->authloginviaemail)) {
         <h6><?php print_string('potentialidps', 'auth'); ?></h6>
         <div class="potentialidplist">
 <?php foreach ($potentialidps as $idp) {
-    echo  '<div class="potentialidp"><a href="' . $idp['url']->out() . '" title="' . $idp['name'] . '">' . $OUTPUT->render($idp['icon'], $idp['name']) . $idp['name'] . '</a></div>';
+    $idpicon = "";
+    if (array_key_exists('icon', $idp)) {
+        $idpicon = $OUTPUT->render($idp['icon'], $idp['name']);
+    }
+    echo  '<div class="potentialidp"><a href="' . $idp['url']->out() . '" title="' . $idp['name'] . '">' . $idpicon . $idp['name'] . '</a></div>';
 } ?>
         </div>
     </div>
