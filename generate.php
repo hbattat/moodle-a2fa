@@ -8,32 +8,35 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
-* Handle manual badge award.
-*
-* @package a2fa
-* @copyright 2014 Sam Battat
-* @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * Handle manual badge award.
+ *
+ * @package a2fa
+ * @copyright 2014 Sam Battat
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once('../../config.php');
 require_once('GoogleAuthenticator.php');
 
+require_login();
+
 $isadmin = is_siteadmin($USER);
 
-if($isadmin){
-	$ga = new PHPGangsta_GoogleAuthenticator();
-	$field = $DB->get_record('user_info_field', array('shortname'=>'a2fasecret'));
-        $fid = $field->id;
+if ($isadmin) {
+    $ga = new PHPGangsta_GoogleAuthenticator();
+    $field = $DB->get_record('user_info_field', array('shortname' => 'a2fasecret'));
+    $fid = $field->id;
 
-	do{
-		$secret = $ga->createSecret();
-		$row = $DB->get_records_select('user_info_data', "fieldid = {$fid} AND ".$DB->sql_compare_text('data')." = '$secret'");
-	} while(!empty($row));
+    do {
+        $secret = $ga->createSecret();
+        $row = $DB->get_records_select('user_info_data', "fieldid = {$fid} AND " . $DB->sql_compare_text('data') . " = '$secret'");
+    } while (!empty($row));
 
-	echo json_encode(array('status' => 'success', 'secret' => $secret));
+    echo json_encode(array('status' => 'success', 'secret' => $secret));
 }

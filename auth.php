@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/authlib.php');
+require_once($CFG->libdir . '/authlib.php');
 require_once('GoogleAuthenticator.php');
 
 /**
@@ -35,7 +35,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
     /**
      * Constructor.
      */
-    function __construct() {
+    public function __construct() {
         $this->authtype = 'a2fa';
         $this->config = get_config('auth/a2fa');
     }
@@ -47,44 +47,40 @@ class auth_plugin_a2fa extends auth_plugin_base {
      * @param string $password The password
      * @return bool Authentication success or failure.
      */
-    function user_login ($username, $password) {
+    public function user_login($username, $password) {
         global $CFG, $DB, $USER;
-	$token = required_param('token', PARAM_TEXT);
-	
-	if ($user = $DB->get_record('user', array('username'=>$username, 'mnethostid'=>$CFG->mnet_localhost_id))) {
-		$valid_login = validate_internal_user_password($user, $password);
-		if($valid_login && $user->auth == 'a2fa' && !empty($token)){
-			$field = $DB->get_record('user_info_field', array('shortname'=>'a2fasecret'));
-			$fid = $field->id;
-			$uid = $user->id;
-			
-			$ga = new PHPGangsta_GoogleAuthenticator();
-			$secret = $DB->get_record('user_info_data', array('fieldid'=>$fid, 'userid'=>$uid));
-			if(empty($secret->data)){
-				redirect($CFG->wwwroot.'/auth/a2fa/error.php');
-				return false;
-			}
-			else{
-				$checkResult = $ga->verifyCode($secret->data, $token, 2);
-				if($checkResult){
-					return true;
-				}
-				else{
-					return false;
-				}
-			}
-		}
-		else{
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
+        $token = required_param('token', PARAM_TEXT);
+
+        if ($user = $DB->get_record('user', array('username' => $username, 'mnethostid' => $CFG->mnet_localhost_id))) {
+            $validlogin = validate_internal_user_password($user, $password);
+            if ($validlogin && $user->auth == 'a2fa' && !empty($token)) {
+                $field = $DB->get_record('user_info_field', array('shortname' => 'a2fasecret'));
+                $fid = $field->id;
+                $uid = $user->id;
+
+                $ga = new PHPGangsta_GoogleAuthenticator();
+                $secret = $DB->get_record('user_info_data', array('fieldid' => $fid, 'userid' => $uid));
+                if (empty($secret->data)) {
+                    redirect($CFG->wwwroot . '/auth/a2fa/error.php');
+                    return false;
+                } else {
+                    $checkresult = $ga->verifyCode($secret->data, $token, 2);
+                    if ($checkresult) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
-    function loginpage_hook() {
-		
+    public function loginpage_hook() {
+
     }
 
     /**
@@ -92,12 +88,12 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * called when the user password is updated.
      *
-     * @param  object  $user        User table object
-     * @param  string  $newpassword Plaintext password
+     * @param  object $user User table object
+     * @param  string $newpassword Plaintext password
      * @return boolean result
      *
      */
-    function user_update_password($user, $newpassword) {
+    public function user_update_password($user, $newpassword) {
         $user = get_complete_user_data('id', $user->id);
         // This will also update the stored hash to the latest algorithm
         // if the existing hash is using an out-of-date algorithm (or the
@@ -105,7 +101,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
         return update_internal_user_password($user, $newpassword);
     }
 
-    function prevent_local_passwords() {
+    public function prevent_local_passwords() {
         return false;
     }
 
@@ -114,7 +110,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * @return bool
      */
-    function is_internal() {
+    public function is_internal() {
         return true;
     }
 
@@ -124,7 +120,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_change_password() {
+    public function can_change_password() {
         return true;
     }
 
@@ -134,7 +130,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * @return moodle_url
      */
-    function change_password_url() {
+    public function change_password_url() {
         return null;
     }
 
@@ -143,7 +139,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_reset_password() {
+    public function can_reset_password() {
         return true;
     }
 
@@ -152,7 +148,7 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_be_manually_set() {
+    public function can_be_manually_set() {
         return true;
     }
 
@@ -164,14 +160,14 @@ class auth_plugin_a2fa extends auth_plugin_base {
      *
      * @param array $page An object containing all the data for this page.
      */
-    function config_form($config, $err, $user_fields) {
-        include "config.html";
+    public function config_form($config, $err, $userfields) {
+        include("config.html");
     }
 
     /**
      * Processes and stores configuration data for this authentication plugin.
      */
-    function process_config($config) {
+    public function process_config($config) {
         return true;
     }
 
