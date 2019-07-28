@@ -30,8 +30,7 @@ require_once('../../login/lib.php');
 
 function https_required() {
     global $PAGE;
-
-    if (!strpos($PAGE->url, 'https://')) {
+    if (strpos($PAGE->url->out(), 'https://') !== 0) {
         // Detect if incorrect PAGE->set_url() used, it is recommended to use root-relative paths there.
         throw new moodle_exception('a2fa plugin only works if https is enabled');
     }
