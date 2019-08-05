@@ -3,7 +3,7 @@ A2FA or Etouffee as I like to call it!
 A2FA is multi-factor authentication plugin that uses time-based tokens generated every 60 seconds in Google Authenticator app.
 A2FA Stands for Another Two-Factor Authentication
 
-This plugin requires another small plugin (profile field plugin) get it from [Moodle plugin directory](https://moodle.org/plugins/profilefield_afaqr) or from [Github](https://moodle.org/plugins/profilefield_afaqr)
+This plugin requires another small plugin (profile field plugin) get it from [Moodle plugin directory](https://moodle.org/plugins/profilefield_afaqr) or from [Github](https://github.com/hbattat/afaqr)
 
 The field is to add a QR code for the user to be able to sync Google Authenticator with the a2fa system.
 
